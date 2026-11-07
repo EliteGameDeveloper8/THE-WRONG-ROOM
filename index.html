@@ -78,7 +78,17 @@ function hostOpen(code,taken){cleanup();isHost=true;peer=new Peer('twr-'+code);
     G.P.push({n:String(m.n||'Guest').slice(0,12),r:0,c});push();
    }else{const i=G.P.findIndex(p=>p.c===c);if(i>0)act(i,m)}});
   c.on('close',()=>{if(G&&G.phase==='lobby'){G.P=G.P.filter(p=>p.c!==c);push()}})});}
-const go=ph=>{G.phase=ph;G.end=Date.now()+TOT[ph]*1000};
+const go=ph=>{G.phase=ph;G.end=Date.now()+TOT[ph]*1000;G.P.forEach(p=>{if(p.bot){p.nx=Date.now()+2000+rnd(5000);p.vd=Date.now()+2000+rnd(14000)}})};
+/* ===== BOTS: they get real clues/wants like anyone; a bot saboteur pushes its false clue ===== */
+const BN=['Botley','Clank','Brenda.exe','Whirr'];
+const fillBots=g=>{while(g.P.length<3)g.P.push({n:'🤖'+BN.find(b=>!g.P.some(p=>p.n==='🤖'+b)),r:1,c:null,bot:1})};
+function botSay(i){const g=G,o=ops(SC[g.sc[g.step]],g.P),a=g.R[g.step].a[i];
+ act(i,{t:'chat',x:pick([a.ck==='not'?`My sources say it’s NOT “${o[a.ci]}”.`:`I have it on good authority it’s “${o[a.ci]}”.`,`I just feel “${o[a.w]}” has good energy.`,'I am not suspicious. You are suspicious.','Why is the carpet staring at me?','Someone here is lying. Tastes like pennies.','Can we vote for the fern?','I trust nobody. Especially me.'])})}
+function botVote(i){const g=G,nn=g.sc[g.step]?3:4,a=g.R[g.step].a[i],t=g.R[g.step].t;let x;
+ if(i===g.en)x=a.ck==='is'?a.ci:(t+1+rnd(nn-1))%nn;
+ else if(a.ck==='is'&&Math.random()<.7)x=a.ci;else if(Math.random()<.3)x=a.w;else do x=rnd(nn);while(a.ck==='not'&&x===a.ci);
+ act(i,{t:'vote',x})}
+function solo(){cleanup();isHost=true;G={code:'BOTS!',phase:'lobby',step:0,end:0,en:-1,sc:[],R:[],vt:[],res:[],P:[{n:nm,r:0,c:null}]};fillBots(G);push()}
 function begin(){const g=G;g.en=Math.random()<.6?rnd(3):-1;
  g.sc=[0,1,2,3,4].sort(()=>Math.random()-.5).slice(0,3);
  g.R=g.sc.map(s=>{const nn=s?3:4,t=rnd(nn);
@@ -91,9 +101,10 @@ function fin(){const g=G,v=g.vt[g.step],c=[0,0,0,0];v.forEach(x=>x>=0&&c[x]++);c
 function act(i,m){const g=G,p=g.P[i];
  if(m.t==='chat'){const o={t:'c',k:i,n:p.n,x:String(m.x).slice(0,140)};g.P.forEach(q=>q.c&&q.c.send(o));addChat(o);return}
  if(m.t==='ready'&&g.phase==='lobby')p.r=m.v?1:0;
+ if(m.t==='bots'&&i===0&&g.phase==='lobby')fillBots(g);
  if(m.t==='start'&&i===0&&g.phase==='lobby'&&g.P.length===3&&g.P.every(q=>q.r))begin();
  if(m.t==='vote'&&g.phase==='vote'&&g.vt[g.step][i]<0&&m.x>=0&&m.x<(g.sc[g.step]?3:4)){g.vt[g.step][i]=m.x;if(g.vt[g.step].every(x=>x>=0))fin()}
- if(m.t==='again'&&g.phase==='end'){g.phase='lobby';g.P.forEach(q=>q.r=0)}
+ if(m.t==='again'&&g.phase==='end'){g.phase='lobby';g.P.forEach(q=>q.r=q.bot?1:0)}
  push()}
 // what each player is allowed to see: own clues only, truth only after a step resolves, everything at the end
 const view=i=>{const g=G,e=g.phase==='end',l=g.phase==='lobby';
@@ -101,7 +112,8 @@ const view=i=>{const g=G,e=g.phase==='end',l=g.phase==='lobby';
   role:l?0:i===g.en?'e':'g',mine:l?[]:g.R.slice(0,g.step+1).map(r=>r.a[i]),vo:l?[]:g.vt[g.step].map(x=>x>=0),
   res:g.res,all:e?g.R.map(r=>r.a):0,en:e?g.en:-1}};
 function push(){G.P.forEach((p,i)=>p.c&&p.c.open&&p.c.send({t:'v',v:view(i)}));V=view(0);V.at=Date.now();draw()}
-setInterval(()=>{if(isHost&&G&&TOT[G.phase]&&Date.now()>=G.end){
+setInterval(()=>{if(isHost&&G){const n=Date.now();G.P.forEach((p,i)=>{if(!p.bot)return;if(G.phase==='talk'&&n>p.nx){p.nx=n+7000+rnd(9000);botSay(i)}if(G.phase==='vote'&&n>p.vd&&G.vt[G.step][i]<0)botVote(i)})}
+ if(isHost&&G&&TOT[G.phase]&&Date.now()>=G.end){
   if(G.phase==='talk')go('vote');else if(G.phase==='vote')fin();else if(G.step>=2)G.phase='end';else{G.step++;go('talk')}push()}
  if(V&&TOT[V.ph]){const l=Math.max(0,V.left-(Date.now()-V.at))/1000;$('#t')&&($('#t').textContent=Math.ceil(l)+'s');$('#tb')&&($('#tb').style.width=l/TOT[V.ph]*100+'%')}},400);
 
@@ -127,23 +139,26 @@ function menu(){cleanup();isHost=0;
  <input id="nm" maxlength="12" placeholder="Your name" value="${esc(nm)}">
  <button class="b pink" id="c">CREATE LOBBY</button>
  <div class="row"><input id="jc" maxlength="5" placeholder="CODE" value="${esc((new URLSearchParams(location.search).get('room')||'').toUpperCase())}"><button class="b teal" id="j">JOIN LOBBY</button></div>
- <button class="b yel" id="q">QUICK PLAY</button>`;
+ <button class="b yel" id="q">QUICK PLAY</button>
+ <button class="b ghost" id="bt">🤖 Nobody online? Play with bots</button>`;
  const n=()=>{nm=$('#nm').value.trim()||pick(NAMES);localStorage.nm=nm};
  $('#c').onclick=()=>{n();create()};
  $('#j').onclick=()=>{const c=$('#jc').value.trim().toUpperCase();if(c.length!==5)return toast('Codes have 5 characters');n();joinRoom(c)};
- $('#q').onclick=()=>{n();quick()}}
+ $('#q').onclick=()=>{n();quick()};
+ $('#bt').onclick=()=>{n();solo()}}
 function draw(){if(!V)return;const v=$('#ci')?.value,f=document.activeElement?.id==='ci';
  V.ph==='lobby'?lobby():V.ph==='end'?end():game();
  const i=$('#ci');if(i){i.value=v||'';f&&i.focus()}
  const fm=$('#cf');if(fm)fm.onsubmit=e=>{e.preventDefault();const t=$('#ci').value.trim();if(!t)return;$('#ci').value='';send({t:'chat',x:t})};logd()}
 function lobby(){const ps=V.P,me=ps[V.me],all=ps.length===3&&ps.every(p=>p.r);
- app.innerHTML=`<div class="code">ROOM CODE<b>${V.code}</b><button class="b ghost" id="cp">Copy invite link</button></div>
+ app.innerHTML=`<div class="code">ROOM CODE<b>${V.code}</b>${V.code==='BOTS!'?'':'<button class="b ghost" id="cp">Copy invite link</button>'}</div>
  <div class="cast">${[0,1,2].map(i=>{const p=ps[i];return p?`<div class="pl" style="--c:${COL[i]}"><span class="av">${AV[i]}</span><b>${esc(p.n)}${i===V.me?' (you)':''}</b><i>${p.r?'✅ READY':'🤔 not yet'}</i></div>`:`<div class="pl empty"><span class="av">❓</span><b>Waiting…</b></div>`}).join('')}</div>
  <button class="b teal" id="rd">${me.r?'NOT READY':'I’M READY'}</button>
  ${isHost?`<button class="b pink" id="go" ${all?'':'disabled'}>START THE NIGHTMARE</button>`:'<p class="sub">The host starts once all three are ready.</p>'}
+ ${isHost&&ps.length<3?'<button class="b ghost" id="fb">🤖 Fill empty seats with bots</button>':''}
  <button class="b ghost" id="lv">Leave lobby</button>`;
- $('#cp').onclick=()=>navigator.clipboard?.writeText(location.origin+location.pathname+'?room='+V.code).then(()=>toast('Link copied'));
- $('#rd').onclick=()=>send({t:'ready',v:!me.r});$('#go')&&($('#go').onclick=()=>send({t:'start'}));$('#lv').onclick=menu}
+ $('#cp')&&($('#cp').onclick=()=>navigator.clipboard?.writeText(location.origin+location.pathname+'?room='+V.code).then(()=>toast('Link copied')));
+ $('#rd').onclick=()=>send({t:'ready',v:!me.r});$('#fb')&&($('#fb').onclick=()=>send({t:'bots'}));$('#go')&&($('#go').onclick=()=>send({t:'start'}));$('#lv').onclick=menu}
 function game(){const sc=SC[V.sc[V.st]],o=ops(sc,V.P),my=V.mine[V.st],voted=V.vo[V.me],ph=V.ph;
  const secret=`<div class="secret ${peek?'':'blur'}" id="sec"><h4>🤫 YOUR PRIVATE ORDERS <small>(tap to ${peek?'hide':'peek'})</small></h4>
   <p>${V.role==='e'?'😈 You are the SABOTEUR. Make the group pick WRONG. Don’t get caught.':'🙂 You are a GUEST. A saboteur may be among you. Or not.'}</p>
