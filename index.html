@@ -2,51 +2,174 @@
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>The Wrong Room</title>
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bagel+Fat+One&family=Nunito:wght@600;800&display=swap" rel="stylesheet">
 <style>
-:root{--wall:#2a0f3d;--carpet:#0f3b3a;--brass:#ffc83d;--pink:#ff5fa2;--teal:#37d6c4;--cream:#fff4dc;--ink:#1b0a28}
+:root{--wall:#2a0f3d;--brass:#ffc83d;--pink:#ff5fa2;--teal:#37d6c4;--cream:#fff4dc;--ink:#1b0a28}
 *{box-sizing:border-box}html,body{margin:0;min-height:100%}
-body{font:800 16px/1.4 Nunito,system-ui,sans-serif;color:var(--cream);background:var(--wall);
- background-image:repeating-linear-gradient(45deg,#ffffff08 0 14px,transparent 14px 28px),linear-gradient(180deg,var(--wall),#3b1450 70%,var(--carpet));
- padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom)}
+body{font:800 16px/1.4 Nunito,system-ui,sans-serif;color:var(--cream);background:var(--wall) repeating-linear-gradient(45deg,#ffffff08 0 14px,transparent 14px 28px);padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom)}
 #app{max-width:480px;margin:0 auto;padding:16px;display:flex;flex-direction:column;gap:12px}
-h2,h4,.logo,.code b,.b{font-family:'Bagel Fat One',system-ui,sans-serif;font-weight:400}
+h2,h4,.logo,.code b,.b,.big{font-family:'Bagel Fat One',system-ui,sans-serif;font-weight:400}
 .logo{font-size:clamp(54px,18vw,84px);line-height:.88;text-align:center;color:var(--brass);text-shadow:4px 4px 0 var(--pink);transform:rotate(-3deg);animation:wob 4s ease-in-out infinite;margin:18px 0 6px}
 .sub{text-align:center;opacity:.8;margin:0}
-input{font:inherit;padding:14px;border-radius:14px;border:3px solid var(--brass);background:var(--ink);color:var(--cream);width:100%;text-transform:none}
-#jc{text-transform:uppercase;letter-spacing:.3em;text-align:center}
-.row{display:flex;gap:8px}
-.b{font-size:20px;padding:14px 16px;border:0;border-radius:16px;color:var(--ink);box-shadow:0 5px 0 #0006;cursor:pointer;width:100%;transition:transform .1s}
-.b:active{transform:translateY(4px);box-shadow:0 1px 0 #0006}.b:disabled{opacity:.4;cursor:not-allowed}
-.pink{background:var(--pink)}.teal{background:var(--teal)}.yel{background:var(--brass)}.ghost{background:transparent;color:var(--cream);box-shadow:none;font-size:15px}
+input{font:inherit;padding:14px;border-radius:14px;border:3px solid var(--brass);background:var(--ink);color:var(--cream);width:100%}
+#jc{text-transform:uppercase;letter-spacing:.3em;text-align:center}.row{display:flex;gap:8px}
+.b{font-size:20px;padding:14px 16px;border:0;border-radius:16px;color:var(--ink);box-shadow:0 5px 0 #0006;cursor:pointer;width:100%}
+.b:active{transform:translateY(4px)}.b:disabled{opacity:.4}
+.pink{background:var(--pink)}.teal{background:var(--teal)}.yel{background:var(--brass)}.ghost{background:none;color:var(--cream);box-shadow:none;font-size:15px}
 .code{text-align:center;background:var(--ink);border:3px dashed var(--brass);border-radius:18px;padding:12px}
-.code b{display:block;font-size:56px;letter-spacing:.15em;color:var(--brass)}.code small{opacity:.7}
+.code b{display:block;font-size:56px;letter-spacing:.15em;color:var(--brass)}
 .cast{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
-.pl{background:var(--ink);border-bottom:6px solid var(--c,#555);border-radius:16px;padding:10px 4px;text-align:center;display:flex;flex-direction:column;gap:2px;font-size:14px;overflow:hidden}
+.pl{background:var(--ink);border-bottom:6px solid var(--c,#555);border-radius:16px;padding:10px 4px;text-align:center;display:flex;flex-direction:column;font-size:14px;overflow:hidden}
 .pl.empty{opacity:.4}.pl .av{font-size:44px;animation:bob 2.4s ease-in-out infinite}.pl i{font-style:normal;font-size:12px}
-.pop{animation:pop .4s cubic-bezier(.3,1.8,.5,1)}
 .card{background:var(--cream);color:var(--ink);border-radius:20px;padding:14px;box-shadow:6px 6px 0 var(--pink)}
 .card h2{margin:0 0 4px;font-size:26px}.card p{margin:4px 0}
 .secret{background:var(--ink);border:3px solid var(--pink);border-radius:18px;padding:12px;cursor:pointer}
-.secret h4{margin:0 0 6px;color:var(--pink)}.secret small{opacity:.7;font-family:Nunito}.secret p{margin:6px 0}
-.secret.blur p{filter:blur(9px);user-select:none}
-.bar{height:12px;background:var(--ink);border-radius:9px;overflow:hidden}.bar i{display:block;height:100%;width:100%;background:linear-gradient(90deg,var(--pink),var(--brass));transition:width .5s linear}
-.top{display:flex;align-items:center;gap:10px}.top span{font-size:22px;font-family:'Bagel Fat One'}
+.secret h4{margin:0 0 6px;color:var(--pink);font-size:18px}.secret small{opacity:.7;font-family:Nunito}.secret p{margin:6px 0}.secret.blur p{filter:blur(9px)}
+.bar{height:12px;background:var(--ink);border-radius:9px;overflow:hidden;flex:1}.bar i{display:block;height:100%;background:linear-gradient(90deg,var(--pink),var(--brass))}
+.top{display:flex;align-items:center;gap:10px;font:22px 'Bagel Fat One'}
 .opts{display:grid;gap:8px}.opt{background:var(--brass);text-align:left}.opt:nth-child(2n){background:var(--teal)}.opt:nth-child(3n){background:var(--pink)}
 .chat{background:#0006;border-radius:16px;padding:8px;display:flex;flex-direction:column;gap:6px}
-#log{max-height:190px;min-height:70px;overflow:auto;display:flex;flex-direction:column;gap:4px;font-size:15px}
-#log div{animation:pop .25s}#log b{color:var(--c)}#cf{display:flex;gap:6px}#cf button{border:0;border-radius:12px;background:var(--teal);font-size:20px;padding:0 14px}
-.res.win .card{box-shadow:6px 6px 0 var(--teal)}.res.lose .card{box-shadow:6px 6px 0 #ff4d4d}
-.vl{list-style:none;padding:0;margin:8px 0 0}.vl li{padding:2px 0}
-.rv{background:var(--ink);border-left:8px solid var(--c);border-radius:14px;padding:10px;font-size:14px}.rv ul{padding-left:16px;margin:6px 0 0;font-weight:600}
-.rv h4{margin:0;font-size:19px}.big{font-size:30px;text-align:center;margin:0;font-family:'Bagel Fat One';color:var(--brass);animation:wob 3s infinite}
+#log{max-height:190px;min-height:70px;overflow:auto;font-size:15px}#log b{color:var(--c)}
+#cf{display:flex;gap:6px}#cf button{border:0;border-radius:12px;background:var(--teal);font-size:20px;padding:0 14px}
+.lose .card{box-shadow:6px 6px 0 #ff4d4d}.vl{list-style:none;padding:0;margin:8px 0 0}
+.rv{background:var(--ink);border-left:8px solid var(--c);border-radius:14px;padding:10px;font-size:14px}.rv h4{margin:0;font-size:19px}.rv ul{padding-left:16px;margin:6px 0 0;font-weight:600}
+.big{font-size:30px;text-align:center;margin:0;color:var(--brass);animation:wob 3s infinite}
 .toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:var(--pink);color:var(--ink);padding:10px 16px;border-radius:14px;z-index:9}
 @keyframes wob{50%{transform:rotate(3deg) scale(1.03)}}@keyframes bob{50%{transform:translateY(-6px) rotate(6deg)}}
-@keyframes pop{from{transform:scale(.6);opacity:0}}
 @media(prefers-reduced-motion:reduce){*{animation:none!important}}
 </style></head>
 <body><div id="app"></div>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
-<script type="module" src="app.js"></script>
-</body></html>
+<script src="https://cdn.jsdelivr.net/npm/peerjs@1.5.4/dist/peerjs.min.js"></script>
+<script>
+/* ===== SCENARIOS (add yours here; 'pn' = players+Nobody, 'p' = players, or an array of 3 labels) ===== */
+const SC=[
+{t:'The Stolen Key',i:'🗝️',o:'pn',q:'Who stole the hotel key? (Or did nobody?)',s:'The Manager’s moustache is sweating. The key to Room ∞ has vanished.'},
+{t:'The Last Elevator',i:'🛗',o:'p',q:'Who stays behind in the lobby?',s:'The elevator fits two. The third gets a lifetime pass to the lobby, plus a fern.'},
+{t:'Three Doors',i:'🚪',o:['The Breathing Door','The Painting Of A Door','The Door Marked “NOT A DOOR”'],q:'Which door do you open?',s:'One door is the exit. The others are more hotel.'},
+{t:'House Rules',i:'📜',o:['Everyone Speaks In Rhyme','The Floor Is Lava','Compliments Are Illegal'],q:'Which rule will the minibar ghost accept?',s:'The ghost wants a rule. Any rule. Before it gets emotional.'},
+{t:'The Soup Fund',i:'🍲',o:'p',q:'Who receives all 100 gold coins?',s:'The hotel has exactly 100 coins and zero concept of sharing.'}];
+const NAPKIN='The Manager wrote the right answer on a napkin, then ate it. Match it to win as a group.';
+const SRC=['A bellhop with too many elbows','The minibar','A talking carpet','Your own left shoe','A suspicious lamp','The fern','A damp telephone','A wise sandwich'];
+const WIN=['The napkin matches! The Manager weeps with confusion.','Correct! The Manager eats a second napkin.','You did it. Nobody knows how.'];
+const FAIL=['Wrong! The Manager awards a stern pat on the head.','Incorrect. The hotel rearranges itself in disappointment.','Disaster! Somewhere a lamp is laughing.'];
+const NOC='No two of you agreed. The Manager flips a coin, loses it, and declares failure.';
+const VERDICT=['Total catastrophe. The hotel is thrilled.','A mess. A charming mess.','Suspiciously competent.','Flawless. Check yourselves for napkins.'];
+const NAMES=['Gerald','Pickle','Madame Fog','Sir Spoon','Toast'];
+const ops=(s,P)=>s.o==='p'?P.map(p=>p.n):s.o==='pn'?[...P.map(p=>p.n),'Nobody']:s.o;
+const clue=(c,o,k)=>`${SRC[k%SRC.length]} ${c.ck==='not'?`swears it is NOT “${o[c.ci]}”`:`insists it is “${o[c.ci]}”`}. (Sources can be wrong.)`;
+
+/* ===== HELPERS ===== */
+const $=s=>document.querySelector(s),app=$('#app'),rnd=n=>Math.floor(Math.random()*n),pick=a=>a[rnd(a.length)];
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const AV=['🦩','🐙','🧀'],COL=['#ff5fa2','#37d6c4','#ffc83d'],TOT={talk:75,vote:25,result:12};
+let peer,conn,isHost,G,V,chat=[],peek=0,nm=localStorage.nm||'';
+const toast=m=>{const t=document.createElement('div');t.className='toast';t.textContent=m;document.body.append(t);setTimeout(()=>t.remove(),3200)};
+const cleanup=()=>{try{peer&&peer.destroy()}catch(e){}peer=conn=G=V=null;chat=[]};
+const send=m=>isHost?act(0,m):conn&&conn.open&&conn.send(m);
+
+/* ===== HOST: the host's browser is the game server (it holds all secrets) ===== */
+function hostOpen(code,taken){cleanup();isHost=true;peer=new Peer('twr-'+code);
+ peer.on('open',()=>{G={code,phase:'lobby',step:0,end:0,en:-1,sc:[],R:[],vt:[],res:[],P:[{n:nm,r:0,c:null}]};push()});
+ peer.on('error',e=>e.type==='unavailable-id'?taken():(toast('Network: '+e.type),menu()));
+ peer.on('connection',c=>{
+  c.on('data',m=>{
+   if(m.t==='join'){
+    if(!G||G.phase!=='lobby'||G.P.length>=3){c.send({t:'err',m:'Room is full or already started'});setTimeout(()=>c.close(),300);return}
+    G.P.push({n:String(m.n||'Guest').slice(0,12),r:0,c});push();
+   }else{const i=G.P.findIndex(p=>p.c===c);if(i>0)act(i,m)}});
+  c.on('close',()=>{if(G&&G.phase==='lobby'){G.P=G.P.filter(p=>p.c!==c);push()}})});}
+const go=ph=>{G.phase=ph;G.end=Date.now()+TOT[ph]*1000};
+function begin(){const g=G;g.en=Math.random()<.6?rnd(3):-1;
+ g.sc=[0,1,2,3,4].sort(()=>Math.random()-.5).slice(0,3);
+ g.R=g.sc.map(s=>{const nn=s?3:4,t=rnd(nn);
+  return{t,a:[0,1,2].map(i=>{const x=Math.random(),w=rnd(nn);let ck='is',ci=(t+1+rnd(nn-1))%nn;
+   if(i===g.en){if(x<.2){ck='not';ci=t}}else if(x<.6)ck='not';else if(x<.85)ci=t; // honest: 60% true NOT, 25% true IS, 15% false IS. saboteur: false
+   return{w,ck,ci}})}});
+ g.vt=[0,1,2].map(()=>[-1,-1,-1]);g.res=[];g.step=0;go('talk')}
+function fin(){const g=G,v=g.vt[g.step],c=[0,0,0,0];v.forEach(x=>x>=0&&c[x]++);const m=Math.max(...c);
+ g.res.push({o:m>=2?c.indexOf(m):-1,t:g.R[g.step].t,v:[...v]});go('result')}
+function act(i,m){const g=G,p=g.P[i];
+ if(m.t==='chat'){const o={t:'c',k:i,n:p.n,x:String(m.x).slice(0,140)};g.P.forEach(q=>q.c&&q.c.send(o));addChat(o);return}
+ if(m.t==='ready'&&g.phase==='lobby')p.r=m.v?1:0;
+ if(m.t==='start'&&i===0&&g.phase==='lobby'&&g.P.length===3&&g.P.every(q=>q.r))begin();
+ if(m.t==='vote'&&g.phase==='vote'&&g.vt[g.step][i]<0&&m.x>=0&&m.x<(g.sc[g.step]?3:4)){g.vt[g.step][i]=m.x;if(g.vt[g.step].every(x=>x>=0))fin()}
+ if(m.t==='again'&&g.phase==='end'){g.phase='lobby';g.P.forEach(q=>q.r=0)}
+ push()}
+// what each player is allowed to see: own clues only, truth only after a step resolves, everything at the end
+const view=i=>{const g=G,e=g.phase==='end',l=g.phase==='lobby';
+ return{code:g.code,ph:g.phase,st:g.step,sc:g.sc,left:Math.max(0,g.end-Date.now()),P:g.P.map(p=>({n:p.n,r:p.r})),me:i,
+  role:l?0:i===g.en?'e':'g',mine:l?[]:g.R.slice(0,g.step+1).map(r=>r.a[i]),vo:l?[]:g.vt[g.step].map(x=>x>=0),
+  res:g.res,all:e?g.R.map(r=>r.a):0,en:e?g.en:-1}};
+function push(){G.P.forEach((p,i)=>p.c&&p.c.open&&p.c.send({t:'v',v:view(i)}));V=view(0);V.at=Date.now();draw()}
+setInterval(()=>{if(isHost&&G&&TOT[G.phase]&&Date.now()>=G.end){
+  if(G.phase==='talk')go('vote');else if(G.phase==='vote')fin();else if(G.step>=2)G.phase='end';else{G.step++;go('talk')}push()}
+ if(V&&TOT[V.ph]){const l=Math.max(0,V.left-(Date.now()-V.at))/1000;$('#t')&&($('#t').textContent=Math.ceil(l)+'s');$('#tb')&&($('#tb').style.width=l/TOT[V.ph]*100+'%')}},400);
+
+/* ===== GUEST ===== */
+function joinRoom(code,fail){cleanup();isHost=false;let dead=0,ok=0;peer=new Peer();
+ const bail=r=>{dead=1;cleanup();fail?fail(r):(toast(r==='none'?'No room with that code':r),menu())};
+ peer.on('open',()=>{conn=peer.connect('twr-'+code,{reliable:true});
+  conn.on('open',()=>{ok=1;conn.send({t:'join',n:nm})});
+  conn.on('data',m=>{if(m.t==='v'){V=m.v;V.at=Date.now();draw()}else if(m.t==='c')addChat(m);else if(m.t==='err')bail(m.m)});
+  conn.on('close',()=>{if(!dead){toast('Connection lost');menu()}});
+  setTimeout(()=>{if(!ok&&!dead)bail('none')},9000)});
+ peer.on('error',e=>{if(!dead)bail(e.type==='peer-unavailable'?'none':'Network: '+e.type)})}
+const quick=(i=0)=>{if(i>5){toast('Quick rooms are busy. Create a lobby!');return menu()}
+ const c='QP00'+i;joinRoom(c,r=>r==='none'?hostOpen(c,()=>quick(i)):quick(i+1))};
+const create=()=>hostOpen([...Array(5)].map(()=>'ABCDEFGHJKMNPQRSTUVWXYZ23456789'[rnd(31)]).join(''),create);
+
+/* ===== UI ===== */
+const addChat=o=>{chat=[...chat,o].slice(-40);logd()};
+function logd(){const l=$('#log');if(!l)return;l.innerHTML=chat.length?chat.map(m=>`<div style="--c:${COL[m.k]}"><b>${AV[m.k]} ${esc(m.n)}:</b> ${esc(m.x)}</div>`).join(''):'<div style="opacity:.6">Silence. The carpet is listening.</div>';l.scrollTop=l.scrollHeight}
+const chatBox=()=>`<div class="chat"><div id="log"></div><form id="cf"><input id="ci" maxlength="140" placeholder="Say something suspicious…" autocomplete="off"><button>➤</button></form></div>`;
+function menu(){cleanup();isHost=0;
+ app.innerHTML=`<div class="logo">THE<br>WRONG<br>ROOM</div><p class="sub">Three strangers. One hotel. Somebody is lying. Maybe.</p>
+ <input id="nm" maxlength="12" placeholder="Your name" value="${esc(nm)}">
+ <button class="b pink" id="c">CREATE LOBBY</button>
+ <div class="row"><input id="jc" maxlength="5" placeholder="CODE" value="${esc((new URLSearchParams(location.search).get('room')||'').toUpperCase())}"><button class="b teal" id="j">JOIN LOBBY</button></div>
+ <button class="b yel" id="q">QUICK PLAY</button>`;
+ const n=()=>{nm=$('#nm').value.trim()||pick(NAMES);localStorage.nm=nm};
+ $('#c').onclick=()=>{n();create()};
+ $('#j').onclick=()=>{const c=$('#jc').value.trim().toUpperCase();if(c.length!==5)return toast('Codes have 5 characters');n();joinRoom(c)};
+ $('#q').onclick=()=>{n();quick()}}
+function draw(){if(!V)return;const v=$('#ci')?.value,f=document.activeElement?.id==='ci';
+ V.ph==='lobby'?lobby():V.ph==='end'?end():game();
+ const i=$('#ci');if(i){i.value=v||'';f&&i.focus()}
+ const fm=$('#cf');if(fm)fm.onsubmit=e=>{e.preventDefault();const t=$('#ci').value.trim();if(!t)return;$('#ci').value='';send({t:'chat',x:t})};logd()}
+function lobby(){const ps=V.P,me=ps[V.me],all=ps.length===3&&ps.every(p=>p.r);
+ app.innerHTML=`<div class="code">ROOM CODE<b>${V.code}</b><button class="b ghost" id="cp">Copy invite link</button></div>
+ <div class="cast">${[0,1,2].map(i=>{const p=ps[i];return p?`<div class="pl" style="--c:${COL[i]}"><span class="av">${AV[i]}</span><b>${esc(p.n)}${i===V.me?' (you)':''}</b><i>${p.r?'✅ READY':'🤔 not yet'}</i></div>`:`<div class="pl empty"><span class="av">❓</span><b>Waiting…</b></div>`}).join('')}</div>
+ <button class="b teal" id="rd">${me.r?'NOT READY':'I’M READY'}</button>
+ ${isHost?`<button class="b pink" id="go" ${all?'':'disabled'}>START THE NIGHTMARE</button>`:'<p class="sub">The host starts once all three are ready.</p>'}
+ <button class="b ghost" id="lv">Leave lobby</button>`;
+ $('#cp').onclick=()=>navigator.clipboard?.writeText(location.origin+location.pathname+'?room='+V.code).then(()=>toast('Link copied'));
+ $('#rd').onclick=()=>send({t:'ready',v:!me.r});$('#go')&&($('#go').onclick=()=>send({t:'start'}));$('#lv').onclick=menu}
+function game(){const sc=SC[V.sc[V.st]],o=ops(sc,V.P),my=V.mine[V.st],voted=V.vo[V.me],ph=V.ph;
+ const secret=`<div class="secret ${peek?'':'blur'}" id="sec"><h4>🤫 YOUR PRIVATE ORDERS <small>(tap to ${peek?'hide':'peek'})</small></h4>
+  <p>${V.role==='e'?'😈 You are the SABOTEUR. Make the group pick WRONG. Don’t get caught.':'🙂 You are a GUEST. A saboteur may be among you. Or not.'}</p>
+  <p>📣 ${clue(my,o,V.st*3+V.me)}</p><p>⭐ Gold star if the group picks “${esc(o[my.w])}”.</p></div>`;
+ let b='';
+ if(ph==='talk')b=`${secret}<p class="sub">Talk. Bluff. Bargain. Voting opens when the bar runs out.</p>${chatBox()}`;
+ if(ph==='vote')b=`<div class="opts">${o.map((x,i)=>`<button class="b opt" data-i="${i}" ${voted?'disabled':''}>${esc(x)}</button>`).join('')}</div>
+  <p class="sub">${voted?'🔒 Locked in.':'Votes stay secret until all are in.'} (${V.vo.filter(Boolean).length}/3 voted)</p>${secret}${chatBox()}`;
+ if(ph==='result'){const r=V.res[V.st],ok=r.o===r.t;
+  b=`<div class="${ok?'':'lose'}"><div class="card"><h2>${ok?'✅ SUCCESS':'❌ FAILURE'}</h2><p>${r.o<0?NOC:(ok?WIN:FAIL)[V.st%3]}</p><p>🧻 Napkin: <b>${esc(o[r.t])}</b></p>
+  <ul class="vl">${V.P.map((p,i)=>`<li>${AV[i]} ${esc(p.n)} → <b>${r.v[i]>=0?esc(o[r.v[i]]):'froze in panic'}</b></li>`).join('')}</ul></div></div>`}
+ app.innerHTML=`<div class="top"><span>${sc.i} ${V.st+1}/3</span><div class="bar"><i id="tb"></i></div><span id="t"></span></div>
+ <div class="card"><h2>${sc.t}</h2><p>${sc.s}</p><p><b>${sc.q}</b></p><p style="font-size:13px;opacity:.7">${NAPKIN}</p></div>${b}`;
+ $('#sec')&&($('#sec').onclick=()=>{peek=!peek;draw()});
+ document.querySelectorAll('.opt').forEach(x=>x.onclick=()=>send({t:'vote',x:+x.dataset.i}))}
+function end(){const res=V.res,names=V.P.map(p=>p.n),gw=res.filter(r=>r.o===r.t).length,en=V.en>=0;
+ const st=V.P.map((p,k)=>{const e=k===V.en,stars=res.filter((r,i)=>r.o===V.all[i][k].w).length,right=res.filter(r=>r.v[k]===r.t).length;return{p,k,e,stars,right,ok:e?gw<=1:gw>=2&&stars>=1}});
+ const by=[...st].sort((a,b)=>b.right-a.right),sage=by[0],fool=by[2];
+ app.innerHTML=`<p class="big">${en?`😈 THE SABOTEUR WAS ${esc(V.P[V.en].n)}!`:'😇 THERE WAS NO SABOTEUR!'}</p>
+ <p class="sub">${en?'Everyone else was just trying their best. Allegedly.':'You were all just weird. The strange orders were the only villain.'}</p>
+ <div class="card"><h2>${VERDICT[gw]}</h2><p>Group matched the napkin ${gw}/3 times.</p><p>🔮 Oracle: <b>${esc(sage.p.n)}</b> (${sage.right}/3)</p><p>🤡 Hotel’s favourite: <b>${esc(fool.p.n)}</b> (${fool.right}/3)</p>
+ <p>⭐ Stars: ${st.map(s=>`${esc(s.p.n)} ${s.stars}`).join(' · ')}</p></div>
+ ${st.map(s=>`<div class="rv" style="--c:${COL[s.k]}"><h4>${AV[s.k]} ${esc(s.p.n)}: ${s.e?'😈 Saboteur':'🙂 Guest'} ${s.ok?'🏆 achieved':'💀 failed'}</h4>
+ <small>${s.e?'Goal: group fails at least 2 of 3.':'Goal: group wins at least 2 of 3 and you earn a star.'}</small>
+ <ul>${res.map((r,i)=>{const a=V.all[i][s.k],o=ops(SC[V.sc[i]],V.P);return`<li>${SC[V.sc[i]].i} ${clue(a,o,i*3+s.k)} ⭐ wanted “${esc(o[a.w])}”. Truth: ${esc(o[r.t])}.</li>`}).join('')}</ul></div>`).join('')}
+ <button class="b pink" id="ag">PLAY AGAIN</button><button class="b ghost" id="lv">Back to menu</button>`;
+ $('#ag').onclick=()=>send({t:'again'});$('#lv').onclick=menu}
+menu();
+</script></body></html>
